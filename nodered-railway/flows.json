@@ -1,0 +1,76 @@
+[
+    {
+        "id": "ee10b06c6cd12162",
+        "type": "tab",
+        "label": "Basic flow",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "2f831a60a707dca2",
+        "type": "http in",
+        "z": "ee10b06c6cd12162",
+        "name": "Login sample",
+        "url": "/login",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 80,
+        "wires": [
+            [
+                "024277af180430b7"
+            ]
+        ]
+    },
+    {
+        "id": "e3241c04b0eee1f8",
+        "type": "http response",
+        "z": "ee10b06c6cd12162",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 690,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "024277af180430b7",
+        "type": "function",
+        "z": "ee10b06c6cd12162",
+        "name": "function for login sample , 123",
+        "func": "\nconst {username, password}= msg.payload;\nif (!username || !password){\n    msg.statusCode = 401;\n    msg.payload = {error:\" Both username and password are required\"}\n    return msg;\n}\nif (username!==\"sample\" || password!==\"123\") {\n    msg.statusCode = 401;\n    msg.payload = { error: \"Wrong username or password\" }\n    return msg;\n}else{\n    msg.statusCode= 200;\n    msg.payload = {username: \"sample\"};\n    return msg\n}\n ",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 80,
+        "wires": [
+            [
+                "e3241c04b0eee1f8",
+                "7ac23b5bd8b9a6b0"
+            ]
+        ]
+    },
+    {
+        "id": "7ac23b5bd8b9a6b0",
+        "type": "debug",
+        "z": "ee10b06c6cd12162",
+        "name": "debug for login sample",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 740,
+        "y": 140,
+        "wires": []
+    }
+]
