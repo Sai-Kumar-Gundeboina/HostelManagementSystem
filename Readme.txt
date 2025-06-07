@@ -11,3 +11,13 @@ commands:
 installation of node js libraries:
     > npm i react-router-dom@latest
     > npm i axios@latest
+Deployment:
+    > npm install gh-pages --save-dev
+    package.json:
+        "homepage": "https://<your-github-username>.github.io/<repo-name>"
+        "scripts": {
+            "predeploy": "npm run build",
+             "deploy": "gh-pages -d build"
+        }
+
+    > npm run deploy

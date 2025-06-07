@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import axios from 'axios'
 export default function Login() {
     const[form, setForm]=useState({"username":"","password":""})
     const handleChange=(e)=>{
@@ -7,7 +7,10 @@ export default function Login() {
     }
     const handleLogin=(e)=>{
         e.preventDefault();
-        alert(`ENtered ${form.username} - ${form.password}`);
+        axios.post("http://localhost:1880/login", form)
+        .then(()=> alert("Login Success"))
+        .catch((err)=> alert(err.message))
+        //alert(`ENtered ${form.username} - ${form.password}`);
         setForm({"username":"","password":""});
     }
   return (
