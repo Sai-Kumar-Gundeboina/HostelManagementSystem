@@ -20,6 +20,7 @@ Deployment:
              "deploy": "gh-pages -d build"
         }
 
+    > git remote add origin https://github.com/Sai-Kumar-Gundeboina/HostelManagementSystem.git
     > npm run deploy
 
 Nodered and MYSQL:
