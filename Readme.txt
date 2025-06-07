@@ -35,3 +35,20 @@ Installation :
     > sudo apt install -y nodejs
 
     > sudo npm install -g --unsafe-perm node-red
+
+SSL certificate creation for converting nodered http to https:
+    > openssl req -x509 -newkey rsa:2048 -nodes -keyout key.pem -out cert.pem -days 365
+
+    Move  key.pem cert.pem certificate to nodered folder
+    > mv key.pem cert.pem ~/.node-red
+
+Write HTTPS setting data to settings.js file:
+    > nano ~/.node-red/settings.js
+
+    in module.exports = { section add the following
+    """
+        https: {
+            key: require("fs").readFileSync(require("path").join(__dirname, "key.pem")),
+            cert: require("fs").readFileSync(require("path").join(__dirname, "cert.pem"))
+        },
+    """
