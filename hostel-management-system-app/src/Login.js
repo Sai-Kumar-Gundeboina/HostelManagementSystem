@@ -7,7 +7,7 @@ export default function Login() {
     }
     const handleLogin=(e)=>{
         e.preventDefault();
-        axios.post("http://localhost:1880/login", form)
+        axios.post("http://20.193.131.13/:1880/login", form)
         .then(()=> alert("Login Success"))
         .catch((err)=> alert(err.message))
         //alert(`ENtered ${form.username} - ${form.password}`);

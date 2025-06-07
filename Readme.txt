@@ -21,3 +21,16 @@ Deployment:
         }
 
     > npm run deploy
+
+Nodered and MYSQL:
+
+    > Cd downloads
+    > ssh -i nodered-vm_key.pem azureuser@20.193.131.13
+Installation :
+    > sudo apt update
+    > sudo apt install -y build-essential git curl
+
+    > curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+    > sudo apt install -y nodejs
+
+    > sudo npm install -g --unsafe-perm node-red
