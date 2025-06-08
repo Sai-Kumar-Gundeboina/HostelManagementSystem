@@ -57,7 +57,7 @@ Node-red and MYSQL:
             },
         """
 
-In Microsoft Axure:
+In Microsoft Azure:
     Auto run MYSQL:
         > sudo systemctl is-enabled mysql
      if not enabled then  > sudo systemctl enable mysql
@@ -66,3 +66,21 @@ In Microsoft Axure:
         > sudo systemctl start nodered.service
     for checking status     > sudo systemctl status nodered.service
     enable to start on boot > sudo systemctl enable nodered.service
+
+MYSQL: 
+    > "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u nodered -p -h 20.193.131.13
+    > password: StrongPassword123!
+    -> Database: HMS
+    -> Tables: 
+        -> Users:
+            -> id, username, password, mobilenumber, email, role, created_at
+            > CREATE TABLE users (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                username VARCHAR(50) NOT NULL UNIQUE,
+                password VARCHAR(255) NOT NULL,
+                mobilenumber VARCHAR(15) NOT NULL,
+                email VARCHAR(100) NOT NULL UNIQUE,
+                role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        -> insert into users(username, password, mobilenumber, role, email) values ("sai", "12345", "9876543210","admin","sai@gmail.com");
