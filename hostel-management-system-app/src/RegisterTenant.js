@@ -21,6 +21,7 @@ export default function RegisterTenant() {
     alignItems: "center"
   }}
 >
+  
   <div
     className="form-container"
     style={{
