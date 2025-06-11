@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import './styles.css'
 import axios from 'axios'
 export default function RegisterTenant() {
-  const [form, setform]= useState({name:"", mobile:"",password:"", emailid:"", roomType:"single", permanentadr:"", approved:"Yes"})
-  const handleChange= (e)=>{ setform({name:"", mobile:"",password:"", emailid:"", roomType:"single", permanentadr:"", approved:"Yes"})}
+  const [form, setform]= useState({name:"", mobile:"",password:"", emailid:"", roomType:"single", permanentadr:"", approved:"Yes", allocatedRoom:""})
+  const handleChange= (e)=>{ setform({...form, [e.target.name]:e.target.value})}
   const handleSubmitForm = (e)=>{
     e.preventDefault();
     alert(`${form.name} ${form.mobile} ${form.emailid} ${form.roomType} ${form.permanentadr}`)
@@ -55,7 +55,7 @@ export default function RegisterTenant() {
           placeholder='Enter password'
           value={form.password}
           onChange={handleChange}
-          pattern='(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).{8,}'
+          //pattern='(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).{8,}'
           required
           />
           <br/>
@@ -72,7 +72,7 @@ export default function RegisterTenant() {
           <br/>
           <label htmlFor='emailid'>Email id : </label>
           <input
-            type='emailid'
+            type='email'
             placeholder='Enter email id'
             name='emailid'
             value={form.emailid}
@@ -98,6 +98,7 @@ export default function RegisterTenant() {
             <br/>
             <label>Permanenet Adress : </label>
             <textarea onChange={handleChange} name='permanentadr' id="permanentadr" value={form.permanentadr} placeholder='Enter your permanent address' rows="5" cols="30"/>
+            <br/>
             <br/>
           <button type='submit'>Submit</button>
       </form>
