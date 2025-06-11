@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/HostelManagementSystem/static/css/main.f855e6bc.css",
-    "main.js": "/HostelManagementSystem/static/js/main.aef54ac5.js",
+    "main.css": "/HostelManagementSystem/static/css/main.35385b0b.css",
+    "main.js": "/HostelManagementSystem/static/js/main.9f265310.js",
     "static/js/453.0c23d713.chunk.js": "/HostelManagementSystem/static/js/453.0c23d713.chunk.js",
     "index.html": "/HostelManagementSystem/index.html",
-    "main.f855e6bc.css.map": "/HostelManagementSystem/static/css/main.f855e6bc.css.map",
-    "main.aef54ac5.js.map": "/HostelManagementSystem/static/js/main.aef54ac5.js.map",
+    "main.35385b0b.css.map": "/HostelManagementSystem/static/css/main.35385b0b.css.map",
+    "main.9f265310.js.map": "/HostelManagementSystem/static/js/main.9f265310.js.map",
     "453.0c23d713.chunk.js.map": "/HostelManagementSystem/static/js/453.0c23d713.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f855e6bc.css",
-    "static/js/main.aef54ac5.js"
+    "static/css/main.35385b0b.css",
+    "static/js/main.9f265310.js"
   ]
 }
