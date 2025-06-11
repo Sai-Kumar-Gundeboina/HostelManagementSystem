@@ -1,24 +1,22 @@
 
 import Login from './Login';
 import './App.css';
+import './styles.css'
 import RegisterTenant from './RegisterTenant';
 import {BrowserRouter as  Router, Routes, Route, useNavigate, Link } from 'react-router-dom';
+import Layout from './Layout';
 
 function App() {
   return (
     <Router>
-      <div className="App">
-          <h1>Hostel Management System</h1>
-          <nav>
-            <Link to="/login">Login</Link> |{" "}
-            <Link to="/RegisterTenant">Register</Link>
-          </nav>
-                  
+      <Layout>
+      <div className="App">                 
         <Routes>
           <Route path='/login' element={<Login/>}/>
           <Route path='/RegisterTenant' element={<RegisterTenant/>}/>
         </Routes>
       </div>
+      </Layout>
     </Router>
     
   );

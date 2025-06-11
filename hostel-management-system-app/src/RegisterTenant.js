@@ -3,7 +3,7 @@ import './styles.css'
 import axios from 'axios'
 export default function RegisterTenant() {
   const [form, setform]= useState({name:"", mobile:"",password:"", emailid:"", roomType:"single", permanentadr:"", approved:"Yes"})
-  const handleChange= (e)=>{ setform({...form,[e.target.name]:e.target.value})}
+  const handleChange= (e)=>{ setform({name:"", mobile:"",password:"", emailid:"", roomType:"single", permanentadr:"", approved:"Yes"})}
   const handleSubmitForm = (e)=>{
     e.preventDefault();
     alert(`${form.name} ${form.mobile} ${form.emailid} ${form.roomType} ${form.permanentadr}`)
@@ -13,10 +13,10 @@ export default function RegisterTenant() {
     <div
   className="register-page"
   style={{
-    backgroundImage: "url('/your-image.jpg')",
+    backgroundImage: "url('https://static.vecteezy.com/system/resources/previews/040/890/255/non_2x/ai-generated-empty-wooden-table-on-the-natural-background-for-product-display-free-photo.jpg')",
     backgroundSize: "cover",
     backgroundPosition: "center",
-    minHeight: "100vh",
+    minHeight: "90vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center"
@@ -55,6 +55,7 @@ export default function RegisterTenant() {
           placeholder='Enter password'
           value={form.password}
           onChange={handleChange}
+          pattern='(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).{8,}'
           required
           />
           <br/>

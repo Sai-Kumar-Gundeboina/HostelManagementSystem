@@ -1,22 +1,92 @@
-input, textarea, button {
+/* styles.css */
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Common container */
+.Login-page, .register-page {
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Reusable form container */
+.form-container {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
   width: 100%;
-  padding: 10px;
-  margin-top: 8px;
+}
+
+/* Form headings */
+.form-container h1,
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Labels */
+form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #444;
+}
+
+/* Inputs */
+form input[type="text"],
+form input[type="password"],
+form input[type="email"],
+form input[type="tel"] {
+  width: 100%;
+  padding: 10px 12px;
   margin-bottom: 16px;
-  border-radius: 6px;
   border: 1px solid #ccc;
-  font-size: 1rem;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border 0.3s;
 }
 
-button {
+form input:focus {
+  outline: none;
+  border-color: #007BFF;
+}
+
+/* Buttons */
+form button[type="submit"] {
+  width: 100%;
+  padding: 12px;
   background-color: #007BFF;
-  color: white;
-  font-weight: bold;
   border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background 0.2s ease-in-out;
+  transition: background-color 0.3s;
 }
 
-button:hover {
+form button[type="submit"]:hover {
   background-color: #0056b3;
 }
+
+/* Responsive tweaks */
+@media screen and (max-width: 600px) {
+  .form-container {
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  form input {
+    font-size: 16px;
+  }
+}
+
