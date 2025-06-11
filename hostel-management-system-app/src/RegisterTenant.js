@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import './styles.css'
+import axios from 'axios'
 export default function RegisterTenant() {
-  const [form, setform]= useState({name:"", mobile:"", emailid:"", roomType:"single", permanentadr:""})
+  const [form, setform]= useState({name:"", mobile:"",password:"", emailid:"", roomType:"single", permanentadr:"", approved:"Yes"})
   const handleChange= (e)=>{ setform({...form,[e.target.name]:e.target.value})}
   const handleSubmitForm = (e)=>{
     e.preventDefault();
@@ -42,6 +43,17 @@ export default function RegisterTenant() {
           id="name"
           placeholder='Enter full name'
           value={form.name}
+          onChange={handleChange}
+          required
+          />
+          <br/>
+        <label htmlFor='name'>Password : </label>
+        <input
+          type="password"
+          name='password'
+          id="password"
+          placeholder='Enter password'
+          value={form.password}
           onChange={handleChange}
           required
           />
