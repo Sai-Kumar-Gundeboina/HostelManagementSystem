@@ -42,6 +42,10 @@ export default function Login() {
             
             <h1>Login</h1>
             <form onSubmit={handleLogin} method='POST'>
+                <div style={{display: "flex", gap: "10px", alignitems: "center", justifyContent:"center", paddingBottom:"10px"}}>
+                <input type='radio' name='role'/><label>User</label>
+                <input type='radio' name='role'/><label>Admin</label>
+                </div>
                 <label>Username: </label>
                 <input 
                     onChange={handleChange}
