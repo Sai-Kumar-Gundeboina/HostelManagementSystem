@@ -1,12 +1,22 @@
 import React, { useState } from 'react'
 import './styles.css'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 export default function RegisterTenant() {
-  const [form, setform]= useState({name:"", mobile:"",password:"", emailid:"", roomType:"single", permanentadr:"", approved:"Yes", allocatedRoom:""})
+  const navigate = useNavigate();
+  const [form, setform]= useState({name:"", mobile:"",password:"", emailid:"", roomType:"single", permanentAdr:"", status:"approved", allocatedRoom:""})
   const handleChange= (e)=>{ setform({...form, [e.target.name]:e.target.value})}
   const handleSubmitForm = (e)=>{
     e.preventDefault();
-    alert(`${form.name} ${form.mobile} ${form.emailid} ${form.roomType} ${form.permanentadr}`)
+    try{
+      axios.post("http://localhost:1880/register-tenant", form)
+      alert("Registered Successfully..");
+     navigate("/")
+     } catch (err) {
+       console.error(err);
+        alert("Failed to Register..")
+    }
+    //alert(`${form.name} ${form.mobile} ${form.emailid} ${form.roomType} ${form.permanentadr}`)
     //setform({name:"", mobile:"", emailid:"", roomType:"",permanentadr:""})
   }
   return (
@@ -97,7 +107,7 @@ export default function RegisterTenant() {
             </fieldset>
             <br/>
             <label>Permanenet Adress : </label>
-            <textarea onChange={handleChange} name='permanentadr' id="permanentadr" value={form.permanentadr} placeholder='Enter your permanent address' rows="5" cols="30"/>
+            <textarea onChange={handleChange} name='permanentAdr' id="permanentAdr" value={form.permanentAdr} placeholder='Enter your permanent address' rows="5" cols="30"/>
             <br/>
             <br/>
           <button type='submit'>Submit</button>
