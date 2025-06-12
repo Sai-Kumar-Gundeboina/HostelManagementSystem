@@ -87,9 +87,9 @@ MYSQL:
                 registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         -> insert into users(username, password, mobilenumber, role, email) values ("sai", "12345", "9876543210","admin","sai@gmail.com");
-        -> Owner:
+        -> Admin:
             -> username, password
-            -> CREATE Table owners (
+            -> CREATE Table Admin (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 username VARCHAR(50) NOT NULL,
                 password VARCHAR(255) NOT NULL

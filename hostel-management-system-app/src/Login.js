@@ -30,7 +30,7 @@ export default function Login() {
         .then(()=> alert("Login Success"))
         .catch((err)=> alert(err.message))
         
-        setForm({"username":"","password":""});
+        setForm({"email":"","password":""});
     }
   return (
     <div
