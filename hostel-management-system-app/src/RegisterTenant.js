@@ -96,11 +96,11 @@ export default function RegisterTenant() {
                 <label htmlFor='single'>1-shared</label>
               </div>
               <div>
-                <input type='radio' id="double" name="roomType" value="double" onChange={handleChange} checked ={form.roomType ==="double"}/>
+                <input type='radio' id="double" name="roomType" value="double"  onChange={handleChange} checked ={form.roomType ==="double"}/>
                 <label htmlFor='double'>2-shared</label>
               </div>
               <div>
-                <input type='radio' id="triple" name="roomType" value="triple"onChange={handleChange} checked ={form.roomType ==="triple"}/>
+                <input type='radio' id="triple" name="roomType" value="triple" onChange={handleChange} checked ={form.roomType ==="triple"}/>
                 <label htmlFor='triple'>3-shared</label>
               </div>
               

@@ -1,18 +1,35 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import './styles.css'
+import { useNavigate } from 'react-router-dom'
 
 export default function Login() {
-    const[form, setForm]=useState({"username":"","password":""})
+    const[form, setForm]=useState({"email":"","password":""})
+    const[role, setRole]=useState("")
+    const navigate = useNavigate()
     const handleChange=(e)=>{
         setForm({...form, [e.target.name]:e.target.value})
     }
     const handleLogin=(e)=>{
         e.preventDefault();
+        if(role ==='Tenant'){
+            try{
+                axios.post("", form)
+                .then(()=>{navigate("/Admin-Home")})
+                .catch(()=>{navigate("/login")})
+            }
+            catch (err) {
+       console.error(err);
+        alert("Failed to Login..");
+        navigate("/login");
+    }
+        }else if (role === 'Admin'){
+
+        }
         axios.post("https://localhost:1880/login", form) //http://20.193.131.13:1880/
         .then(()=> alert("Login Success"))
         .catch((err)=> alert(err.message))
-        //alert(`ENtered ${form.username} - ${form.password}`);
+        
         setForm({"username":"","password":""});
     }
   return (
@@ -43,16 +60,16 @@ export default function Login() {
             <h1>Login</h1>
             <form onSubmit={handleLogin} method='POST'>
                 <div style={{display: "flex", gap: "10px", alignitems: "center", justifyContent:"center", paddingBottom:"10px"}}>
-                <input type='radio' name='role'/><label>User</label>
-                <input type='radio' name='role'/><label>Admin</label>
+                <input type='radio' name='role' value={'Tenant'} onChange={()=>{setRole('Tenant')}}/><label>Tenant</label>
+                <input type='radio' name='role' value={'Admin'} onChange={()=>{setRole('Admin')}}/><label>Admin</label>
                 </div>
-                <label>Username: </label>
+                <label>Email: </label>
                 <input 
                     onChange={handleChange}
-                    name='username'
-                    type="text" 
-                    placeholder='username'
-                    value={form.username} required/><br/>
+                    name='email'
+                    type="email" 
+                    placeholder='email'
+                    value={form.email} required/><br/>
                 <label>Password: </label>
                 <input 
                     onChange={handleChange}
