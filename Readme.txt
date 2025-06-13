@@ -71,6 +71,8 @@ MYSQL:
     > "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u nodered -p -h 20.193.131.13
     > password: StrongPassword123!
     -> Database: HMS
+    -> backup: mysqldump -u root -p my_database > my_database_backup.sql
+    -> restore: mysqldump -u root -p --all-databases > my_databases_backup.sql
     -> Tables: 
         -> Tenants:
             ->  id, name, mobile, password, emailid, roomType, permanentAdr, status, allocatedRoom, registered_at
