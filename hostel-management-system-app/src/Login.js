@@ -4,33 +4,37 @@ import './styles.css'
 import { useNavigate } from 'react-router-dom'
 
 export default function Login() {
-    const[form, setForm]=useState({"email":"","password":""})
-    const[role, setRole]=useState("")
+    const[form, setForm]=useState({"username":"","password":""})
+    const[role, setRole]=useState("Admin")
     const navigate = useNavigate()
     const handleChange=(e)=>{
         setForm({...form, [e.target.name]:e.target.value})
     }
     const handleLogin=(e)=>{
         e.preventDefault();
-        if(role ==='Tenant'){
+        if(role ==='Admin'){
             try{
-                axios.post("", form)
-                .then(()=>{navigate("/Admin-Home")})
+                axios.post("http://localhost:1880/login-admin", form)
+                .then((res)=>{
+                    alert("Login Success.... ")
+                    localStorage.setItem("token", res.data.token);
+                    localStorage.setItem("role", res.data.role);
+                    navigate("/AdminHomePage")})
                 .catch(()=>{navigate("/login")})
             }
             catch (err) {
-       console.error(err);
-        alert("Failed to Login..");
-        navigate("/login");
-    }
-        }else if (role === 'Admin'){
+            console.error(err);
+            alert("Failed to Login..");
+            navigate("/login");
+        }
+        }else if (role === 'Tenant'){
 
         }
-        axios.post("https://localhost:1880/login", form) //http://20.193.131.13:1880/
-        .then(()=> alert("Login Success"))
-        .catch((err)=> alert(err.message))
+        //axios.post("https://localhost:1880/login", form) //http://20.193.131.13:1880/
+        //.then(()=> alert("Login Success"))
+        //.catch((err)=> alert(err.message))
         
-        setForm({"email":"","password":""});
+        setForm({"username":"","password":""});
     }
   return (
     <div
@@ -60,16 +64,16 @@ export default function Login() {
             <h1>Login</h1>
             <form onSubmit={handleLogin} method='POST'>
                 <div style={{display: "flex", gap: "10px", alignitems: "center", justifyContent:"center", paddingBottom:"10px"}}>
-                <input type='radio' name='role' value={'Tenant'} onChange={()=>{setRole('Tenant')}}/><label>Tenant</label>
-                <input type='radio' name='role' value={'Admin'} onChange={()=>{setRole('Admin')}}/><label>Admin</label>
+                <input type='radio' name='role' value={'Tenant'} checked = {role==="Tenant"}onChange={()=>{setRole('Tenant')}}/><label>Tenant</label>
+                <input type='radio' name='role' value={'Admin'} checked = {role==="Admin"}onChange={()=>{setRole('Admin')}}/><label>Admin</label>
                 </div>
-                <label>Email: </label>
+                <label>Username: </label>
                 <input 
                     onChange={handleChange}
-                    name='email'
-                    type="email" 
-                    placeholder='email'
-                    value={form.email} required/><br/>
+                    name='username'
+                    type="text" 
+                    placeholder='username'
+                    value={form.username} required/><br/>
                 <label>Password: </label>
                 <input 
                     onChange={handleChange}

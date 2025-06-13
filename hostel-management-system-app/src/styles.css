@@ -13,7 +13,7 @@ body, html {
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
+  padding: 40px 20px;
 }
 
 /* Reusable form container */
@@ -22,8 +22,8 @@ body, html {
   padding: 30px 40px;
   border-radius: 16px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-  max-width: 500px;
-  width: 100%;
+  width: 90%;
+  margin: 0 auto;
 }
 
 /* Form headings */
@@ -88,5 +88,65 @@ form button[type="submit"]:hover {
   form input {
     font-size: 16px;
   }
+}
+
+/* styles.css */
+
+/* Page background container */
+.Login-page {
+  background-size: cover;
+  background-position: center;
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
+/* White box container for the form */
+.form-container {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  width: 100%;
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f0f0f0;
+  color: #333;
+  font-weight: bold;
+}
+
+tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Delete button styling */
+button {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #c9302c;
 }
 
