@@ -1,0 +1,472 @@
+[
+    {
+        "id": "ce99a460f1aac497",
+        "type": "tab",
+        "label": "HMS",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "8a303bf52063cc18",
+        "type": "debug",
+        "z": "ce99a460f1aac497",
+        "name": "debug 25",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "f95c5ca5c467b537",
+        "type": "debug",
+        "z": "ce99a460f1aac497",
+        "name": "debug 26",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "5852a00737c78b68",
+        "type": "function",
+        "z": "ce99a460f1aac497",
+        "name": "Hanfle Login",
+        "func": "const {email, password} = msg.payload;\nif (email ===\"test@gmail.com\" && password ===\"1234\"){\n    const jwt = global.get('jwt');\n    const token = jwt.sign({email},\"secretKey\",{expiresIn:\"1h\"});\n    msg.statusCode = 200;\n    msg.payload = {success: true};\n    msg.cookies ={\n        token:{\n            value: token,\n            htttpOnly: false\n        }\n    };\n    return msg;\n}else{\n    msg.statusCode = 401;\n    msg.payload = {message: `${email} - ${password} Invalid`};\n    return msg;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 100,
+        "wires": [
+            [
+                "8a303bf52063cc18",
+                "90570a656320a26d"
+            ]
+        ]
+    },
+    {
+        "id": "ac7cf08a6586e677",
+        "type": "function",
+        "z": "ce99a460f1aac497",
+        "name": "function 19",
+        "func": "const jwt = global.get('jwt');\nconst token = msg.req.cookies?.token;\nif (!token) {\n    msg.statusCode = 403;\n    msg.payload = { message: \"no token found\" };\n    return msg;\n}\ntry {\n    const decoded = jwt.verify(token, \"secretKey\");\n    msg.payload = { message: \"protected data\", user: decoded };\n    return msg\n} catch (err) {\n    msg.statusCode = 401;\n    msg.payload = { message: \"inavaid token\" };\n    return msg;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 200,
+        "wires": [
+            [
+                "f95c5ca5c467b537",
+                "e78bf711b62ae8aa"
+            ]
+        ]
+    },
+    {
+        "id": "8f8216a18da10bd6",
+        "type": "http in",
+        "z": "ce99a460f1aac497",
+        "name": "Login",
+        "url": "/loginn",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 100,
+        "wires": [
+            [
+                "5852a00737c78b68"
+            ]
+        ]
+    },
+    {
+        "id": "888978e72a4732ca",
+        "type": "http in",
+        "z": "ce99a460f1aac497",
+        "name": "protected api",
+        "url": "/protectedapi",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 200,
+        "wires": [
+            [
+                "ac7cf08a6586e677"
+            ]
+        ]
+    },
+    {
+        "id": "90570a656320a26d",
+        "type": "http response",
+        "z": "ce99a460f1aac497",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 690,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "e78bf711b62ae8aa",
+        "type": "http response",
+        "z": "ce99a460f1aac497",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 670,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "567cc89f58451a66",
+        "type": "http in",
+        "z": "ce99a460f1aac497",
+        "name": "Register",
+        "url": "/register-tenant",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 140,
+        "y": 320,
+        "wires": [
+            [
+                "f81a83bb06056f51"
+            ]
+        ]
+    },
+    {
+        "id": "f81a83bb06056f51",
+        "type": "function",
+        "z": "ce99a460f1aac497",
+        "name": "function for reqister query",
+        "func": "//name, mobile, password, emailid, roomType, permanentAdr, status, allocatedRoom, registered_at\nlet user = msg.payload\n\nconst bcrypt = global.get(\"bcrypt\");\n\nif(!user.name || !user.password || !user.roomType || !user.permanentAdr || !user.password || !user.mobile ){\n    msg.statuscode = 400;\n    msg.payload = { error: \"All the fields are required\"}\n    return msg;\n}\nlet hashedPassword = bcrypt.hashSync(user.password, 10);\nmsg.topic = `INSERT INTO Tenants \n    (name, mobile, password, emailid, roomType, permanentAdr, status, allocatedRoom, registered_at) \n    VALUES (?, ?, ?, ?, ?, ?, 'pending', NULL, NOW())\n`;\nmsg.payload = [\n    user.name, \n    user.mobile, \n    hashedPassword, \n    user.emailid|| null, \n    user.roomType, \n    user.permanentAdr]\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 320,
+        "wires": [
+            [
+                "2abb353109b7b8bf"
+            ]
+        ]
+    },
+    {
+        "id": "79c872d3d4e1a80e",
+        "type": "debug",
+        "z": "ce99a460f1aac497",
+        "name": "debug 27",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 960,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "47507cb07e0291ee",
+        "type": "http response",
+        "z": "ce99a460f1aac497",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 970,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "2abb353109b7b8bf",
+        "type": "mysql",
+        "z": "ce99a460f1aac497",
+        "mydb": "39c4bd60d680cd5d",
+        "name": "MYSQL insert",
+        "x": 720,
+        "y": 320,
+        "wires": [
+            [
+                "47507cb07e0291ee",
+                "79c872d3d4e1a80e"
+            ]
+        ]
+    },
+    {
+        "id": "6bce067fe07cbfa7",
+        "type": "http in",
+        "z": "ce99a460f1aac497",
+        "name": "Admin Login",
+        "url": "/login-admin",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 480,
+        "wires": [
+            [
+                "396116496e410aad"
+            ]
+        ]
+    },
+    {
+        "id": "396116496e410aad",
+        "type": "function",
+        "z": "ce99a460f1aac497",
+        "name": "Register select Query",
+        "func": "//username. password\nlet user = msg.payload\n\nif(!user.username || !user.password ){\n    msg.statuscode = 400;\n    msg.payload = { error: \"Email and Password are required\"}\n    return msg;\n}\n\nmsg.topic = `select * from admin where username='${user.username}'`;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 480,
+        "wires": [
+            [
+                "b94dbfa899989cfd"
+            ]
+        ]
+    },
+    {
+        "id": "b94dbfa899989cfd",
+        "type": "mysql",
+        "z": "ce99a460f1aac497",
+        "mydb": "39c4bd60d680cd5d",
+        "name": "MYSQL insert",
+        "x": 680,
+        "y": 480,
+        "wires": [
+            [
+                "264ed6e81588a0f7",
+                "d2eff31965e2aea0"
+            ]
+        ]
+    },
+    {
+        "id": "3cbffe5b0078261c",
+        "type": "http response",
+        "z": "ce99a460f1aac497",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1090,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "264ed6e81588a0f7",
+        "type": "debug",
+        "z": "ce99a460f1aac497",
+        "name": "debug 28",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1100,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "d2eff31965e2aea0",
+        "type": "function",
+        "z": "ce99a460f1aac497",
+        "name": "function 18",
+        "func": "\nconst jwt = global.get('jwt');\nconst bcrypt = global.get('bcrypt');\nconst secret =\"mySecretKey\";\n\nlet user = msg.payload[0];\n\nif( !user || !bcrypt.compareSync(msg.req.body.password, user.password)){\n    msg.statusCode = 401;\n    msg.action =\"login_failed\"\n    msg.payload = 401;\n    msg.payload = {error: \"Invlid username or password\"}\n    return msg;\n}\n\nlet token = jwt.sign(\n    {id: user.id, role: \"admin\", username: user.username}, \n    secret, \n    {expiresIn:\"1h\"}\n);\nmsg.action = \"login_success\";\nmsg.payload = {\n    token, \n    role:\"admin\"\n    };\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 460,
+        "wires": [
+            [
+                "3cbffe5b0078261c",
+                "264ed6e81588a0f7"
+            ]
+        ]
+    },
+    {
+        "id": "8711fe5523a6d2f7",
+        "type": "http in",
+        "z": "ce99a460f1aac497",
+        "name": "Get tenants List",
+        "url": "/get-tenants",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 180,
+        "y": 600,
+        "wires": [
+            [
+                "950894b80f2bbdcb"
+            ]
+        ]
+    },
+    {
+        "id": "0e82052e7ae36cb5",
+        "type": "mysql",
+        "z": "ce99a460f1aac497",
+        "mydb": "39c4bd60d680cd5d",
+        "name": "Tenant List",
+        "x": 670,
+        "y": 600,
+        "wires": [
+            [
+                "733335eb1448cd9b",
+                "9b45a2b40b9b796f"
+            ]
+        ]
+    },
+    {
+        "id": "950894b80f2bbdcb",
+        "type": "function",
+        "z": "ce99a460f1aac497",
+        "name": "Verigy Admin JWT",
+        "func": "const jwt = global.get('jwt');\nconst secret = \"mySecretKey\";\ntry{\n    const token = msg.req.headers.authorization?.split(\" \")[1];\n    const decoded = jwt.verify(token, secret)\n    if (decoded.role==='admin'){\n        msg.topic = `\n        SELECT id, name, password, mobile, emailid, roomType, permanentAdr, status, allocatedRoom, registered_at \n        FROM tenants`;\n        return  msg\n    }\n}catch(e){\n    msg.statusCode = 403;\n    msg.payload = { error: \"Un authorized\"}\n    return msg;\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 600,
+        "wires": [
+            [
+                "0e82052e7ae36cb5"
+            ]
+        ]
+    },
+    {
+        "id": "733335eb1448cd9b",
+        "type": "http response",
+        "z": "ce99a460f1aac497",
+        "name": "Get Tenants Response",
+        "statusCode": "",
+        "headers": {},
+        "x": 960,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "7a032b0cdcaf2ddc",
+        "type": "http in",
+        "z": "ce99a460f1aac497",
+        "name": "Approve Tenant",
+        "url": "/approve-tenant/:id",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 180,
+        "y": 680,
+        "wires": [
+            [
+                "9d7f639dc86ea6e2"
+            ]
+        ]
+    },
+    {
+        "id": "9d7f639dc86ea6e2",
+        "type": "function",
+        "z": "ce99a460f1aac497",
+        "name": "Verigy Admin JWT",
+        "func": "const jwt = global.get('jwt');\nconst secret = \"mySecretKey\";\n\ntry {\n    const id = parseInt(msg.req.params.id); // basic sanitization\n    const allocatedRoom = msg.payload.roomNo;\n\n    if (!allocatedRoom || isNaN(id)) {\n        msg.statusCode = 400;\n        msg.payload = { error: \"Invalid input\" };\n        return msg;\n    }\n\n    const token = msg.req.headers.authorization?.split(\" \")[1];\n    const decoded = jwt.verify(token, secret);\n\n    if (decoded.role === 'admin') {\n        // Escape double quotes if needed (for SQLite, MySQL, etc.)\n        \n        msg.topic = `UPDATE tenants SET status = \"approved\", allocatedRoom = \"${allocatedRoom}\" WHERE id = ${id}`;\n        return msg;\n    } else {\n        msg.statusCode = 403;\n        msg.payload = { error: \"Unauthorized\" };\n        return msg;\n    }\n} catch (e) {\n    msg.statusCode = 403;\n    msg.payload = { error: \"Unauthorized\", message: e.message };\n    return msg;\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 680,
+        "wires": [
+            [
+                "3759cdcbe607781e",
+                "9b45a2b40b9b796f"
+            ]
+        ]
+    },
+    {
+        "id": "3759cdcbe607781e",
+        "type": "mysql",
+        "z": "ce99a460f1aac497",
+        "mydb": "39c4bd60d680cd5d",
+        "name": "Approve Tenant",
+        "x": 660,
+        "y": 680,
+        "wires": [
+            [
+                "c3f074d8d15beebc",
+                "9b45a2b40b9b796f"
+            ]
+        ]
+    },
+    {
+        "id": "c3f074d8d15beebc",
+        "type": "http response",
+        "z": "ce99a460f1aac497",
+        "name": "Approve tenant Response",
+        "statusCode": "",
+        "headers": {},
+        "x": 950,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "9b45a2b40b9b796f",
+        "type": "debug",
+        "z": "ce99a460f1aac497",
+        "name": "debug 29",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "39c4bd60d680cd5d",
+        "type": "MySQLdatabase",
+        "name": "HMS",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "hms",
+        "tz": "",
+        "charset": "UTF8"
+    }
+]
