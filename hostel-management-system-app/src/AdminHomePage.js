@@ -12,7 +12,7 @@ export default function AdminHomePage() {
   const fetchTenantDetails = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:1880/get-tenants", {
+      const res = await axios.get("https://20.193.131.13:1880/get-tenants", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -28,7 +28,7 @@ export default function AdminHomePage() {
       const roomNumber = parseInt(roomNo);
       const token = localStorage.getItem("token");
       await axios.post(
-        `http://localhost:1880/approve-tenant/${id}`,
+        `https://20.193.131.13:1880/approve-tenant/${id}`,
         {
           roomNo: roomNumber,
         },
@@ -51,7 +51,7 @@ export default function AdminHomePage() {
       try {
         const token = localStorage.getItem("token");
         await axios.post(
-          `http://localhost:1880/reject-tenant/${id}`,
+          `https://20.193.131.13:1880/reject-tenant/${id}`,
           {},
           {
             headers: {
@@ -73,7 +73,7 @@ export default function AdminHomePage() {
       try {
         const token = localStorage.getItem("token");
         await axios.post(
-          `http://localhost:1880/delete-tenant/${id}`,
+          `https://20.193.131.13:1880/delete-tenant/${id}`,
           {},
           {
             headers: {

@@ -20,7 +20,7 @@ export default function RegisterTenant() {
   const handleSubmitForm = (e) => {
     e.preventDefault();
     try {
-      axios.post("http://localhost:1880/register-tenant", form);
+      axios.post("https://20.193.131.13:1880/register-tenant", form);
       alert("Registered Successfully..");
       navigate("/");
     } catch (err) {

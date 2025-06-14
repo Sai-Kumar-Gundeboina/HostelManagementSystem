@@ -14,11 +14,11 @@ export default function Login() {
     e.preventDefault();
     if (role === "Admin") {
       try {
-        const res = await axios.post("http://localhost:1880/login-admin", form);
+        const res = await axios.post("https://20.193.131.13:1880/login-admin", form);
         alert("Login Success.... ");
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("role", res.data.role);
-        navigate("/AdminHomePage");
+        navigate("/admin-homepage");
       } catch (err) {
         console.error(err);
         alert("Failed to Login..");
@@ -27,14 +27,14 @@ export default function Login() {
       }
     } else if (role === "Tenant") {
       try {
-        const res = await axios.post("http://localhost:1880/login", {
+        const res = await axios.post("https://20.193.131.13:1880/login", {
           emailid: form.username,
           password: form.password,
         });
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("role", "Tenant");
         localStorage.setItem("name", res.data.name)
-        navigate("/TenantHomePage");
+        navigate("/tenant-homepage");
       } catch (err) {
         console.log(err);
         alert(

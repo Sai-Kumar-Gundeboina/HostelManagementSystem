@@ -1,17 +1,12 @@
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./Login";
-import "./App.css";
-import "./styles.css";
 import RegisterTenant from "./RegisterTenant";
 import AdminHomePage from "./AdminHomePage";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useNavigate,
-  Link,
-} from "react-router-dom";
-import Layout from "./Layout";
 import TenantHomePage from "./TenantHomePage";
+import Layout from "./Layout";
+import "./App.css";
+import "./styles.css";
 
 function App() {
   return (
@@ -20,9 +15,10 @@ function App() {
         <div className="App">
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/RegisterTenant" element={<RegisterTenant />} />
-            <Route path="/AdminHomePage" element={<AdminHomePage />} />
-            <Route path="/TenantHomePage" element={<TenantHomePage />} />
+            <Route path="/register-tenant" element={<RegisterTenant />} />
+            <Route path="/admin-homepage" element={<AdminHomePage />} />
+            <Route path="/tenant-homepage" element={<TenantHomePage />} />
+            <Route path="*" element={<Navigate to="/login" />} />
           </Routes>
         </div>
       </Layout>

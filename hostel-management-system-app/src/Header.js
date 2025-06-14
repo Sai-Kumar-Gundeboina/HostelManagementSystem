@@ -26,7 +26,7 @@ export default function Header() {
       <h1>Hostel Management System</h1>
       <nav>
         <Link to="/login">Login</Link> |{" "}
-        <Link to="/RegisterTenant">Register</Link>|{" "}
+        <Link to="/register-tenant">Register</Link>|{" "}
         <a
         href="#"
         onClick={(e)=>{
