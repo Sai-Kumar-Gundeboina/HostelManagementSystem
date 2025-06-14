@@ -46,12 +46,34 @@ export default function AdminHomePage() {
     }
   };
   const handleReject = async (id) => {
-    const choice = prompt("Do you really want to delete (Y/N)?");
+    const choice = prompt("Do you really want to Reject(Y/N)?");
     if (choice.toUpperCase() === "Y" || choice.toUpperCase() === "YES") {
       try {
         const token = localStorage.getItem("token");
         await axios.post(
           `http://localhost:1880/reject-tenant/${id}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        alert("Rejected Successfully");
+        fetchTenantDetails();
+      } catch (err) {
+        alert("Failed to approve...");
+        console.log(err);
+      }
+    }
+  };
+  const handleDelete = async (id) => {
+    const choice = prompt("Do you really want to Reject(Y/N)?");
+    if (choice.toUpperCase() === "Y" || choice.toUpperCase() === "YES") {
+      try {
+        const token = localStorage.getItem("token");
+        await axios.post(
+          `http://localhost:1880/delete-tenant/${id}`,
           {},
           {
             headers: {
@@ -92,7 +114,52 @@ export default function AdminHomePage() {
           width: "90%",
         }}
       >
-        <h1>AdminHomePage</h1>
+        <h1>New Regestrations</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Mobile</th>
+              <th>Preferred Room</th>
+              <th>Permanenet Adress</th>
+              <th>Status</th>
+              <th>Registered Time</th>
+
+              {localStorage.getItem("role") === "admin" && (
+                <>
+                  <th>Action</th>
+                </>
+              )}
+            </tr>
+          </thead>
+          <tbody>
+            {tenantData.map((tenant) =>
+              tenant.status === "pending" ? (
+                <tr key={tenant.id}>
+                  <td>{tenant.name}</td>
+                  <td>{tenant.emailid.toUpperCase()}</td>
+                  <td>{tenant.mobile}</td>
+                  <td>{tenant.roomType}</td>
+                  <td>{tenant.permanentAdr}</td>
+                  <td>{tenant.status}</td>
+                  <td>{tenant.registered_at}</td>
+                  
+                  <td>
+                    <button onClick={() => handleApprove(tenant.id)}>
+                      Approve
+                    </button>
+                    |
+                    <button onClick={() => handleReject(tenant.id)}>
+                      Reject
+                    </button>
+                  </td>
+                </tr>
+              ) : null
+            )}
+          </tbody>
+        </table>
+        <h1>Approved Tenants</h1>
         <table>
           <thead>
             <tr>
@@ -112,29 +179,69 @@ export default function AdminHomePage() {
             </tr>
           </thead>
           <tbody>
-            {tenantData.map((tenant) => (
-              <tr key={tenant.id}>
-                <td>{tenant.name}</td>
-                <td>{tenant.emailid.toUpperCase()}</td>
-                <td>{tenant.mobile}</td>
-                <td>{tenant.roomType}</td>
-                <td>{tenant.permanentAdr}</td>
-                <td>{tenant.status}</td>
-                <td>{tenant.registered_at}</td>
-                <td>
-                  <strong>{tenant.allocatedRoom}</strong>
-                </td>
-                <td>
-                  <button onClick={() => handleApprove(tenant.id)}>
-                    Approve
-                  </button>
-                  |
-                  <button onClick={() => handleReject(tenant.id)}>
-                    Reject
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {tenantData.map((tenant) =>
+              tenant.status !== "left" ? (
+                <tr key={tenant.id}>
+                  <td>{tenant.name}</td>
+                  <td>{tenant.emailid.toUpperCase()}</td>
+                  <td>{tenant.mobile}</td>
+                  <td>{tenant.roomType}</td>
+                  <td>{tenant.permanentAdr}</td>
+                  <td>{tenant.status}</td>
+                  <td>{tenant.registered_at}</td>
+                  <td>
+                    <strong>{tenant.allocatedRoom}</strong>
+                  </td>
+                  <td>
+                    <button onClick={() => handleDelete(tenant.id)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ) : null
+            )}
+          </tbody>
+        </table>
+        <h2>Past Tenants</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Mobile</th>
+              <th>Preferred Room</th>
+              <th>Permanenet Adress</th>
+              <th>Allocated Room</th>
+              <th>Registered Time</th>
+              <th>Leaving Time</th>
+              {localStorage.getItem("role") === "admin" && (
+                <>
+                  <th>Action</th>
+                </>
+              )}
+            </tr>
+          </thead>
+          <tbody>
+            {tenantData.map((tenant) =>
+              tenant.status === "left" ? (
+                <tr key={tenant.id}>
+                  <td>{tenant.name}</td>
+                  <td>{tenant.emailid.toUpperCase()}</td>
+                  <td>{tenant.mobile}</td>
+                  <td>{tenant.roomType}</td>
+                  <td>{tenant.permanentAdr}</td>
+                  <td>{tenant.allocatedRoom}</td>
+                  <td>{tenant.registered_at}</td>
+                  <td>{tenant.left_at}</td>
+                  <td>
+                    <button onClick={() => handleApprove(tenant.id)}>
+                      Re-Entry
+                    </button>
+                    
+                  </td>
+                </tr>
+              ) : null
+            )}
           </tbody>
         </table>
       </div>

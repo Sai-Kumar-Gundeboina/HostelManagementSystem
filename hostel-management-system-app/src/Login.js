@@ -10,33 +10,39 @@ export default function Login() {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     if (role === "Admin") {
       try {
-        axios
-          .post("http://localhost:1880/login-admin", form)
-          .then((res) => {
-            alert("Login Success.... ");
-            localStorage.setItem("token", res.data.token);
-            localStorage.setItem("role", res.data.role);
-            navigate("/AdminHomePage");
-          })
-          .catch(() => {
-            navigate("/login");
-          });
+        const res = await axios.post("http://localhost:1880/login-admin", form);
+        alert("Login Success.... ");
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("role", res.data.role);
+        navigate("/AdminHomePage");
       } catch (err) {
         console.error(err);
         alert("Failed to Login..");
         navigate("/login");
+        setForm({ username: "", password: "" });
       }
     } else if (role === "Tenant") {
+      try {
+        const res = await axios.post("http://localhost:1880/login", {
+          emailid: form.username,
+          password: form.password,
+        });
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("role", "Tenant");
+        localStorage.setItem("name", res.data.name)
+        navigate("/TenantHomePage");
+      } catch (err) {
+        console.log(err);
+        alert(
+          "Admin has not approved your request or Wrong password or username"
+        );
+        setForm({ username: "", password: "" });
+      }
     }
-    //axios.post("https://localhost:1880/login", form) //http://20.193.131.13:1880/
-    //.then(()=> alert("Login Success"))
-    //.catch((err)=> alert(err.message))
-
-    setForm({ username: "", password: "" });
   };
   return (
     <div

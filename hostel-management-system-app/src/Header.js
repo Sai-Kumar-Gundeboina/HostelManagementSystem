@@ -1,12 +1,15 @@
 import React from "react";
 import Login from "./Login";
 import RegisterTenant from "./RegisterTenant";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 export default function Header() {
+  const navigate = useNavigate();
   const handleLogout = () => {
     try {
       localStorage.removeItem("token");
       localStorage.removeItem("role");
+      localStorage.removeItem("name");
+      navigate("/login");
     } catch (err) {
       console.log(err);
     }
@@ -24,15 +27,16 @@ export default function Header() {
       <nav>
         <Link to="/login">Login</Link> |{" "}
         <Link to="/RegisterTenant">Register</Link>|{" "}
-        <Link
-          to="/login"
-          onClick={() => {
-            handleLogout();
-          }}
+        <a
+        href="#"
+        onClick={(e)=>{
+          e.preventDefault();
+          handleLogout();
+        }}
         >
           {" "}
           Logout
-        </Link>
+        </a>
       </nav>
     </header>
   );
